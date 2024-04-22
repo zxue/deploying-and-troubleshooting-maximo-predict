@@ -327,4 +327,4 @@ While it is possible to run the Ansible playbook to install Maximo Predict, it i
 Note that you will deploy Maximo Predict first and then activate it.
 
 
-
+Many thanks to my colleagues, David Jones and JANKI VORA for their assistance and support.
