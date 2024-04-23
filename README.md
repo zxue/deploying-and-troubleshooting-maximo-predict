@@ -6,7 +6,11 @@ Maximo Predict is one of the applications in Maximo Application Suite. It can us
 
 Deploying Maximo Predict requires IBM Watson Studio, IBM Watson Machine Learning, Watson OpenScale and Spark. In addition, it requires that Maximo Health and Maximo Monitor, which requires IBM Db2 Warehouse database, Apache Kafka and MongoDB. To meet the prerequisites, you can install Maximo IoT. Alternatively, you can install each application and software components individually.
 
-For more details, check [Deploying IBM Maximo Predict](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-predict) and [Deploying IBM Maximo Monitor](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-monitor).
+For more details, check 
+- [Deploying IBM Maximo Predict](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-predict)
+- [Deploying IBM Maximo Monitor](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-monitor).
+- [Deploying IoT tool](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=tool-deploying-iot)
+- [Installing Apache Kafka](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=dependencies-installing-apache-kafka)
 
 ## Deployment Host or Workstation
 
