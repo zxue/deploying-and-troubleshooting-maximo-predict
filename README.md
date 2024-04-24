@@ -349,7 +349,11 @@ While it is possible to run the Ansible playbook to install Maximo Predict, it i
 
 If external certificates are used, configure the setting on the MAS admin console.
 
-For more details, check [Deploying IBM Maximo Predict](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-predict).
+Also, configure Watson Studio by providing the url, admin username, and password. Wait until the connection is validated. 
+
+If Watson Studio is not available, deploy CP4D on the same OpenShift cluster or on a separate one. For more details check [Installing IBM Cloud Pak for Data](https://www.ibm.com/docs/en/cloud-paks/cp-data/4.8.x?topic=installing).
+
+For more details, check [Deploying IBM Maximo Predict](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-predict). Also, you may use the opensource tool, [Cloud Pak Deployer](https://ibm.github.io/cloud-pak-deployer/30-reference/process/overview/) available on github.
 
 Note that you will deploy Maximo Predict first and then activate it.
 
