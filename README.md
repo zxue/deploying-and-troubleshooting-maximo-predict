@@ -300,6 +300,8 @@ The third option is to work with the MAS admin console, which has been most succ
 
 Check if Manage with Health is enabled. If not, enable it from the MAS admin console.
 
+The entire Maximo Predict deployment and activation process, including all required applications, can take 4-6 hours or longer.
+
 ### Install Kafka
 
 You can find details on [Installing Apache Kafka](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=dependencies-installing-apache-kafka).
