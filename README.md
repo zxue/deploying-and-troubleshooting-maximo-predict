@@ -284,6 +284,67 @@ mas install --mas-catalog-version v8-amd64 --accept-license \
 20. Launch Installation. You can view progress at the provided url e.g. 
   https://xxx.com/pipelines/ns/mas-poc1-pipelines
 
+## Add Maximo Predict to an Existing MAS Manage Environment
+
+There are three options to deploy Maximo Predict to an existing MAS Manage environment.
+- Ansible playooks
+- mas install
+- MAS admin console
+
+The first two options require that you identify the several values first that are specific to the environment in addition to common values such as entitlement key, and license file. Below are some of the values you will need to know.
+
+- The MAS instance ID and workspace ID, which you can find from the "ManageWorkspace" instance in custom resources. 
+- External certificates if used. You can find them in the Certificates section from the MAS admin portal. Also, you can find them on the MAS core networking route page from the OpenShift admin portal. Note that the two certificates in "Certificate" in OpenShift are mapped to the tls.crt in MAS, the CA certificate maps to ca.crt, and the Key maps to tls.key. When Maximo Predict is deployed, you will see five certificate entries for suite core services, Manage, IoT, Monitor, and Predict.
+
+The third option is to work with the MAS admin console, which has been most successful based on my limited experience. It is therefore discussed here.
+
+Check if Manage with Health is enabled. If not, enable it from the MAS admin console.
+
+### Install Kafka
+
+You can find details on [Installing Apache Kafka](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=dependencies-installing-apache-kafka).
+
+Step 7 is to create a Kafka instance using yaml. The specified version 2.7 is outdated. But even if you change it to the compatible versions like 3.5 or 3.6, it still shows some errors and as a result the pod is not ready. 
+
+You can create the Kafka instance from the AMQ Stream operator. Complete the form with the values specified in the yaml file and create it. Review the yaml file and fix any missing or incorrect values.
+
+Step 10 is to create a Kafka user. The yaml file works but you may notice some warning messages.
+
+```
+In resource KafkaUser(kafka/maskafkauser) in API version kafka.strimzi.io/v1beta2 the operation property at path spec.authorization.acls.operation has been deprecated, and should now be configured using spec.authorization.acls[*].operations.
+
+Resource KafkaUser(kafka/maskafkauser) contains object at path spec.authorization.acls.resource with unknown properties: name, patternType
+```
+Make a note of the Kafka host and port, username, password and the certificate. You'll need them when configuring Kafka for IoT deployment.
+
+### Install IoT
+
+Before deploying IoT, you will need to configure Kafka from the MAS admin console. Enter the Kafka host and port (443), username, password, and the certificate. Wait until the connection to the Kafka instance is validated.
+
+Click the advanced settings to change:
+- Storage: size 100Gi, storage class e.g. "ocs-storagecluster-ceph-rbd" 
+- Deployment: small
+
+If the deployment gets stuck, you can troubleshoot pods in the IoT namespace. Alternatively, you can delete the IoT tool from the MAS admin console and re-install it.
+
+You may notice many pods have errors during deployment, but the deployment will finish. The pods with errors can be addressed later.
+
+More details on [Deploying IoT tool](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=tool-deploying-iot).
+
+### Deploy Maximo Monitor
+
+While it is possible to run the Ansible playbook to install Maximo Monitor, it is much easier to deploy it from the MAS console. 
+
+For more details, check [Deploying IBM Maximo Monitor](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-monitor).
+
+### Deploy Maximo Predict
+
+While it is possible to run the Ansible playbook to install Maximo Predict, it is much easier to deploy it from the MAS console. 
+
+For more details, check [Deploying IBM Maximo Predict](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-predict).
+
+Note that you will deploy Maximo Predict first and then activate it.
+
 ## Troubleshooting Maxim Predict Deployment Issues
 
 Deploying Maximo Predict on an existing OpenShift cluster can take a few hours, depending on selected options. From the OpenShift admin console, you can check the deployment status by reviewing the pipelines.
@@ -318,17 +379,6 @@ b. Click "Show advanced settings". Switch off "System managed" on database. Ente
 c. Apply the changes and activate Manage.
 
 This step can take more than 2 hours. When done, MAS Manage will active in the MAS workspace.
-
-3. Deploy Maximo Monitor from the MAS Admin Console
-
-While it is possible to run the Ansible playbook to install Maximo Monitor, it is much easier to deploy it from the MAS console. For more details, check [Deploying IBM Maximo Monitor](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-monitor).
-
-
-4. Deploy Maximo Predict from the MAS Admin Console
-
-While it is possible to run the Ansible playbook to install Maximo Predict, it is much easier to deploy it from the MAS console. For more details, check [Deploying IBM Maximo Predict](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-predict).
-
-Note that you will deploy Maximo Predict first and then activate it.
 
 ## Acknowledgement
 
