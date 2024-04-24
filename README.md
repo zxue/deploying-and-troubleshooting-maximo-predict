@@ -325,6 +325,8 @@ Click the advanced settings to change:
 - Storage: size 100Gi, storage class e.g. "ocs-storagecluster-ceph-rbd" 
 - Deployment: small
 
+If external certificates are used, configure the setting on the MAS admin console.
+
 If the deployment gets stuck, you can troubleshoot pods in the IoT namespace. Alternatively, you can delete the IoT tool from the MAS admin console and re-install it.
 
 You may notice many pods have errors during deployment, but the deployment will finish. The pods with errors can be addressed later.
@@ -335,11 +337,15 @@ More details on [Deploying IoT tool](https://www.ibm.com/docs/en/mas-cd/continuo
 
 While it is possible to run the Ansible playbook to install Maximo Monitor, it is much easier to deploy it from the MAS console. 
 
+If external certificates are used, configure the setting on the MAS admin console.
+
 For more details, check [Deploying IBM Maximo Monitor](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-monitor).
 
 ### Deploy Maximo Predict
 
 While it is possible to run the Ansible playbook to install Maximo Predict, it is much easier to deploy it from the MAS console. 
+
+If external certificates are used, configure the setting on the MAS admin console.
 
 For more details, check [Deploying IBM Maximo Predict](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-predict).
 
