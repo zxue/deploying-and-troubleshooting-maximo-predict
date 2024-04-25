@@ -232,7 +232,6 @@ Storage provider auto-detected: OpenShift Container Storage
   - Storage class (ReadWriteMany): ocs-storagecluster-cephfs
  
 Choose your own storage classes anyway? [y/N] 
- 
 
 14) Advanced Settings
 Customize cluster monitoring storage settings, ingress certificate secret, workload scaling profile and default namespaces for MAS dependencies.
@@ -294,7 +293,7 @@ There are three options to deploy Maximo Predict to an existing MAS Manage envir
 The first two options require that you identify the several values first that are specific to the environment in addition to common values such as entitlement key, and license file. Below are some of the values you will need to know.
 
 - The MAS instance ID and workspace ID, which you can find from the "ManageWorkspace" instance in custom resources. 
-- External certificates if used. You can find them in the Certificates section from the MAS admin portal. Also, you can find them on the MAS core networking route page from the OpenShift admin portal. Note that the two certificates in "Certificate" in OpenShift are mapped to the tls.crt in MAS, the CA certificate maps to ca.crt, and the Key maps to tls.key. When Maximo Predict is deployed, you will see five certificate entries for suite core services, Manage, IoT, Monitor, and Predict.
+- External certificates if used. You can find them in the Certificates section from the MAS admin portal. Also, you can find them on the MAS core networking route page from the OpenShift admin portal. Note that the two certificates in "Certificate" in OpenShift are mapped to the Certificate tls.crt (the first one under Certificates) in MAS, the certificate in CA Certificate maps to Certificate authority (optional) ca.crt (the second one), and the value in Key maps to the Private Key tls.key (the third one). When Maximo Predict is deployed, you will see five certificate entries for suite core services, Manage, IoT, Monitor, and Predict.
 
 The third option is to work with the MAS admin console, which has been most successful based on my limited experience. It is therefore discussed here.
 
@@ -331,7 +330,7 @@ If external certificates are used, configure the setting on the MAS admin consol
 
 If the deployment gets stuck, you can troubleshoot pods in the IoT namespace. Alternatively, you can delete the IoT tool from the MAS admin console and re-install it.
 
-You may notice many pods have errors during deployment, but the deployment will finish. The pods with errors can be addressed later.
+You may notice many pods have errors during deployment, but the deployment will finish. Most likely this does not cause any issue because the pods with errors are failed jobs and they are finished successfully. 
 
 More details on [Deploying IoT tool](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=tool-deploying-iot).
 
@@ -351,9 +350,12 @@ If external certificates are used, configure the setting on the MAS admin consol
 
 Also, configure Watson Studio by providing the url, admin username, and password. Wait until the connection is validated. 
 
-If Watson Studio is not available, deploy CP4D on the same OpenShift cluster or on a separate one. For more details check [Installing IBM Cloud Pak for Data](https://www.ibm.com/docs/en/cloud-paks/cp-data/4.8.x?topic=installing).
+If Watson Studio is not available, deploy CP4D on the same OpenShift cluster or on a separate one. For more details on how to install CP4D, check one of the options below:
+- [Installing IBM Cloud Pak for Data](https://www.ibm.com/docs/en/cloud-paks/cp-data/4.8.x?topic=installing). 
+- You may use the open source tool, [Cloud Pak Deployer](https://ibm.github.io/cloud-pak-deployer/30-reference/process/overview/) available on github. 
+- Run the [CP4D playbook or role for Maximo](https://ibm-mas.github.io/ansible-devops/roles/cp4d/)
 
-For more details, check [Deploying IBM Maximo Predict](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-predict). Also, you may use the open source tool, [Cloud Pak Deployer](https://ibm.github.io/cloud-pak-deployer/30-reference/process/overview/) available on github.
+For more details, check [Deploying IBM Maximo Predict](https://www.ibm.com/docs/en/mas-cd/continuous-delivery?topic=a-maximo-predict). 
 
 Note that you will deploy Maximo Predict first and then activate it.
 
@@ -371,7 +373,7 @@ If the pipeline stops with errors, you can re-run the pipeline. Alternatively, y
 
 1. IoT Pod Errors
 
-If IoT appears active in MAS workspace, but some IoT pods are in errors, you can proceed with Monitor and Predict deployment and fix the errors later.
+If IoT appears active in MAS workspace, but some IoT pods are in errors, you can proceed with Monitor and Predict deployment. The failed pods are usually failed jobs and replaced with ones that are finished. You can leave them there or delete them.
 
 ![OpenShift IoT pods](./media/openshift-iot-pods.png)
 
@@ -391,6 +393,14 @@ b. Click "Show advanced settings". Switch off "System managed" on database. Ente
 c. Apply the changes and activate Manage.
 
 This step can take more than 2 hours. When done, MAS Manage will active in the MAS workspace.
+
+3. Add Workspace or WorkspaceApplication Level Database Connection
+
+If database connection is configured at the system level only, you may need to create database connection at Workspace level for some applications.
+
+4. Missing Watson Studio for Maximo Predict
+
+Before installing Maximo Predict, make sure that the database connection and Watson Studio are configured. If for any reason that Watson Studio connection is missing, go to Maximo Predict application detail page in MAS admin console and complete the configuration.
 
 ## Acknowledgement
 
